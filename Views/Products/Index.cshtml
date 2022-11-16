@@ -17,6 +17,7 @@
         </th>
         <th></th>
     </tr>
+    
 
     @foreach (var item in Model)
     {
@@ -37,37 +38,53 @@
 <input type="text" id="txtProducto" />
 <input type="button" id="btnCurso" value="GetServer" />
 
+<table id="tblProd" class="table table-bordered table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th align="left" class="productth">ID</th>
+            <th align="left" class="productth">Name</th>
+            
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
 @section Scripts
 {
     <script>
         $(document).ready(function () {
             $("#txtProducto").keyup(function () {
+                
+                $("#tblProd tr ").remove();
+                var prod = $(this).val();
+                
                 $.ajax({
-                    //base address/controller/Action
-                    url: 'http://localhost:44312/Products',
+                    
+                    url: '@Url.Action("getProduct")',
                     type: 'POST',
+                    dataType: 'json',
                     data: {
-                        //Passing Input parameter
-                        id: $('#txtProducto').val()
+                        
+                        //id: $('#txtProducto').val()
+                        name: prod
                     },
-                    success: function (item) {
-                        //write something
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                            <td>
-                              @Html.DisplayFor(modelItem => item.Name)
-                             </td>
+                    success: function (data) {
+                        
+                        $.each(data, function (i, item) {
+                            var fila = "<tr>"
+                                + "<td>" + item.ProductID + "</td>"
+                                + "<td>" + item.Name + "</td>"
+                                + "</tr>";
+                            $("#tblProd tbody").append(fila);
+                        });
 
-                            </tr>
-                        }
 
                     },
                     error: function () {
                         alert("error");
                     }
                 });
-                return false;
+                
             });
         });
 

@@ -10,7 +10,23 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+
+@*<div class="text-right form-inline">
+        <form method="post" id="txtCustomer" >
+            <div class="form-group" >
+                @Html.TextBox("buscar", null, new
+                {
+                    placeholder = "Texto de búsqueda",
+                                        @class = "form-control"
+                })
+            </div>
+            <button  class="btn btn-default" type="submit">Buscar</button>
+        </form>
+    </div>*@
+<p>Obtener cursos</p>
+<input type="text" id="txtCustomer" />
+
+<table class="table" id="tblCusto">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.CustomerName)
@@ -33,33 +49,34 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomerLastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Dni)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PhoneNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CustomerID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CustomerID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CustomerID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.CustomerID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.CustomerID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.CustomerID })
+            </td>
+        </tr>
+    }
 
 </table>
 
@@ -67,24 +84,18 @@
 {
     <script>
         $(document).ready(function () {
-            $("#btnGetDetails").click(function () {
-                $.ajax({
-                    //base address/controller/Action
-                    url: 'http://localhost:44312/Home/Details',
-                    type: 'GET',
-                    data: {
-                        //Passing Input parameter
-                        id: $('#txtId').val()
-                    },
-                    success: function (result) {
-                        //write something
-                    },
-                    error: function () {
-                        alert("error");
-                    }
-                });
-                return false;
+            $("#txtCustomer").keyup(function () {
+                var rows = $("#tblCusto").find("tr").hide();
+                if (this.value.length) {
+
+                    var data = this.value.split(" ");
+                    $.each(data, function (i, v) {
+                        rows.filter(":contains('" + v + "')").show();
+                    });
+                } else rows.show();
+
             });
+
         });
 
     </script>
