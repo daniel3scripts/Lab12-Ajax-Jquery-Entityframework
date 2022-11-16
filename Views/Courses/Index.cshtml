@@ -45,13 +45,24 @@
 <br /> <br />
 <p>Obtener cursos</p>
 <input type="text" id="txtCurso" />
-<input type="button" id="btnCurso" value="GetServer"/>
-<br /> <br />
+<input type="button" value="Get Courses" id="btnCurso" />
+<br/> <br/>
 
+<table id="tblCourse" class="table table-bordered table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th align="left" class="productth">ID</th>
+            <th align="left" class="productth">Name</th>
+            <th align="left" class="productth">Credit Address</th>
+
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
 
 @section Scripts
 {
-    <script>
+    <script >
         //$(documment).ready(function () {
         //    alert("Que tal Daniel");
         //})
@@ -60,17 +71,52 @@
             $("#btnMessage").click(function () {
                 var n = $("#txtName").val();
                 var l = $("#txtLastName").val();
-                alert("Que tal "+ n +" "+ l);
-                
-            })
-
-            $("#btnCurso").click(function () {
-                var c = $("#txtCurso").val();
-                alert("El curso es " + c);
+                alert("Que tal " + n + " " + l);
 
             })
-            
-        })
+
+            //$("#btnCurso").click(function () {
+            //    var c = $("#txtCurso").val();
+            //    alert("El curso es " + c);
+
+            //})
+
+            $("#btnCurso").click((function () {
+
+                var course = $("#txtCurso").val();
+                $("#tblCourse tbody tr").remove();
+                $.ajax({
+
+                    url: '@Url.Action("getCourse")',
+                    dataType: 'json',
+                    type: 'POST',
+                    data: {
+
+                        //id: $('#txtProducto').val()
+                        name: course
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $.each(data, function (i, item) {
+                            var row = "<tr>"
+                                + "<td class='prtoducttd'>" + item.CourseID + "</td>"
+                                + "<td class='prtoducttd'>" + item.Name + "</td>"
+                                + "<td class='prtoducttd'>" + item.Credit + "</td>"
+                                + "</tr>";
+                            $("#tblCourse tbody").append(row);
+                        });
+
+
+                    },
+                    error: function (ex) {
+                        var r = jQuery.parseJSON(response.responseText);
+                        alert("Message: " + r.Message);
+                        alert("StackTrace: " + r.StackTrace);
+                        alert("ExceptionType: " + r.ExceptionType);
+                    }
+                });
+            }));
+        });
 
 
     </script>

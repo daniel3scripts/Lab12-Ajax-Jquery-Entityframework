@@ -123,5 +123,13 @@ namespace CodeFirstDemo.Controllers
             }
             base.Dispose(disposing);
         }
+
+        [HttpPost]
+        public JsonResult getCourse(string name)
+        {
+            var courses = db.Courses.Where(x => x.Name.Contains(name)).ToList();
+
+            return Json(courses,JsonRequestBehavior.AllowGet);
+        }
     }
 }
