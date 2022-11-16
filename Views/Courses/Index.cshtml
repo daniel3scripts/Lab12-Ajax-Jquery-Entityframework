@@ -1,0 +1,77 @@
+﻿@model IEnumerable<CodeFirstDemo.Models.Course>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Credit)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Credit)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CourseID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CourseID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CourseID })
+        </td>
+    </tr>
+}
+
+</table>
+<input type="text" id="txtName" />
+<br /> <br />
+<input type="text" id="txtLastName" />
+<br /> <br />
+<input type="button" id="btnMessage" value="Dale Click" />
+<br /> <br />
+<p>Obtener cursos</p>
+<input type="text" id="txtCurso" />
+<input type="button" id="btnCurso" value="GetServer"/>
+<br /> <br />
+
+
+@section Scripts
+{
+    <script>
+        //$(documment).ready(function () {
+        //    alert("Que tal Daniel");
+        //})
+
+        $(document).ready(function () {
+            $("#btnMessage").click(function () {
+                var n = $("#txtName").val();
+                var l = $("#txtLastName").val();
+                alert("Que tal "+ n +" "+ l);
+                
+            })
+
+            $("#btnCurso").click(function () {
+                var c = $("#txtCurso").val();
+                alert("El curso es " + c);
+
+            })
+            
+        })
+
+
+    </script>
+}
